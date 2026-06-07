@@ -1,0 +1,10 @@
+@InventoryService_HostAddress = http://localhost:5200
+
+### Get stock for PROD-001
+GET {{InventoryService_HostAddress}}/inventory/PROD-001
+
+### Get stock for PROD-002
+GET {{InventoryService_HostAddress}}/inventory/PROD-002
+
+### Get stock for PROD-003
+GET {{InventoryService_HostAddress}}/inventory/PROD-003

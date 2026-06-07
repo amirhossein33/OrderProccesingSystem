@@ -1,0 +1,31 @@
+@OrderService_HostAddress = http://localhost:5100
+
+### Create Order - will succeed (PROD-001 has 100 in stock)
+POST {{OrderService_HostAddress}}/orders
+Content-Type: application/json
+
+{
+  "productId": "PROD-001",
+  "quantity": 5
+}
+
+### Create Order - will fail (PROD-999 does not exist)
+POST {{OrderService_HostAddress}}/orders
+Content-Type: application/json
+
+{
+  "productId": "PROD-999",
+  "quantity": 10
+}
+
+### Create Order - will fail (too many items)
+POST {{OrderService_HostAddress}}/orders
+Content-Type: application/json
+
+{
+  "productId": "PROD-002",
+  "quantity": 999
+}
+
+### Get Order by ID (replace with actual ID)
+GET {{OrderService_HostAddress}}/orders/{{orderId}}

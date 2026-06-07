@@ -1,0 +1,66 @@
+services:
+  postgres-order:
+    image: postgres:latest
+    container_name: postgres_order
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: Order
+    ports:
+      - "5435:5432" 
+    volumes:
+      - postgres_order_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+
+  postgres-inventory:
+    image: postgres:latest
+    container_name: postgres_inventory
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: Inventory
+    ports:
+      - "5434:5432"  
+    volumes:
+      - postgres_inventory_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - app_network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: postgres_pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: adminpassword
+    ports:
+      - "5051:80"  
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - app_network
+
+volumes:
+  postgres_order_data:
+  postgres_inventory_data:
+  pgadmin_data:
+
+networks:
+  app_network:
+    driver: bridge
