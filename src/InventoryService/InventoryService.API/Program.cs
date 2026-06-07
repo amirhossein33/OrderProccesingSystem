@@ -6,6 +6,7 @@ using InventoryService.Application.Consumers;
 using InventoryService.Domain.Repositories;
 using InventoryService.Infrastructure.Persistence;
 using Scalar.AspNetCore;
+using Shared.Contracts.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +45,7 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
+app.UseGlobalExceptionHandler();
 app.UseHttpsRedirection();
 app.MapCarter();
 
