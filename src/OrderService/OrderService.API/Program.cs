@@ -10,6 +10,7 @@ using OrderService.Application.Consumers;
 using OrderService.Domain.Repositories;
 using OrderService.Infrastructure.Persistence;
 using Scalar.AspNetCore;
+using Shared.Contracts.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,6 +61,7 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
+app.UseGlobalExceptionHandler();
 app.UseHttpsRedirection();
 app.MapCarter();
 
