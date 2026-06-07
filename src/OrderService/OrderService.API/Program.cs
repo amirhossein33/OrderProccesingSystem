@@ -14,23 +14,20 @@ using Shared.Contracts.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// EF Core - PostgreSQL
+
 builder.Services.AddDbContext<OrderDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("OrderDb")));
 
-// MediatR + Pipeline
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssemblyContaining<IAssemblyMarker>());
 
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
-// FluentValidation
 builder.Services.AddValidatorsFromAssemblyContaining<IAssemblyMarker>();
 
-// Repositories
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
-// MassTransit + RabbitMQ
 builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<InventoryReservedConsumer>();
@@ -44,7 +41,13 @@ builder.Services.AddMassTransit(x =>
             h.Password(builder.Configuration["RabbitMQ:Password"]!);
         });
 
+        cfg.UseMessageRetry(r => r.Exponential(3,
+          TimeSpan.FromSeconds(1),
+          TimeSpan.FromSeconds(10),
+          TimeSpan.FromSeconds(2)));
+
         cfg.ConfigureEndpoints(context);
+
     });
 });
 

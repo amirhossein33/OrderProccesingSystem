@@ -8,16 +8,6 @@ public class InventoryItem
 
     private InventoryItem() { }
 
-    public static InventoryItem Create(Ulid productId, int quantity)
-    {
-        return new InventoryItem
-        {
-            Id = Ulid.NewUlid(),
-            ProductId = productId,
-            Quantity = quantity
-        };
-    }
-
     public bool HasSufficientStock(int requestedQuantity)
     {
         return Quantity >= requestedQuantity;
@@ -29,5 +19,13 @@ public class InventoryItem
             throw new InvalidOperationException("Insufficient stock.");
 
         Quantity -= quantity;
+    }
+
+    public void Replenish(int quantity)
+    {
+        if (quantity <= 0)
+            throw new InvalidOperationException("Replenish quantity must be greater than zero.");
+
+        Quantity += quantity;
     }
 }

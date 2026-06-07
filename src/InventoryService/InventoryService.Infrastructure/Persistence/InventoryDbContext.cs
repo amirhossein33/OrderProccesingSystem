@@ -26,7 +26,6 @@ public class InventoryDbContext : DbContext
             entity.HasIndex(e => e.ProductId).IsUnique();
             entity.Property(e => e.Quantity).IsRequired();
 
-            // Seed Data - همان ProductId های OrderService
             entity.HasData(
                 new { Id = Ulid.Parse("01JGNX5AA0QQNVENTORY000001"), ProductId = Ulid.Parse("01JGNX4SP0QZVS6QF4R3ZCWGA1"), Quantity = 50 },   // Laptop
                 new { Id = Ulid.Parse("01JGNX5AA0QQNVENTORY000002"), ProductId = Ulid.Parse("01JGNX4SP0QZVS6QF4R3ZCWGA2"), Quantity = 100 },  // Smartphone

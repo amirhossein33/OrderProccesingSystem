@@ -1,5 +1,6 @@
 using Carter;
 using MassTransit;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using InventoryService.API.Extensions;
 using InventoryService.Application.Consumers;
@@ -15,6 +16,8 @@ builder.Services.AddDbContext<InventoryDbContext>(options =>
 
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 
+builder.Services.AddMediatR(cfg => 
+    cfg.RegisterServicesFromAssembly(typeof(InventoryService.Application.IAssemblyMarker).Assembly));
 
 builder.Services.AddMassTransit(x =>
 {
@@ -27,11 +30,15 @@ builder.Services.AddMassTransit(x =>
             h.Username(builder.Configuration["RabbitMQ:Username"]!);
             h.Password(builder.Configuration["RabbitMQ:Password"]!);
         });
+        cfg.UseMessageRetry(r => r.Exponential(3,
+    TimeSpan.FromSeconds(1),
+    TimeSpan.FromSeconds(10),
+    TimeSpan.FromSeconds(2)));
 
         cfg.ConfigureEndpoints(context);
+
     });
 });
-
 builder.Services.AddCarter();
 builder.Services.AddOpenApi();
 
