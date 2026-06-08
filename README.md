@@ -119,8 +119,6 @@ DotNetChallenge/
 - **MediatR 12.4.1** - CQRS
 - **Microsoft.AspNetCore.OpenApi 9.0.7** - OpenAPI spec
 - **Scalar.AspNetCore 2.4.18** - API docs UI
-- **Serilog.AspNetCore 8.0.3** - ASP.NET Core logging
-- **Serilog.Sinks.Elasticsearch 10.0.0** - Elasticsearch sink
 - **Microsoft.EntityFrameworkCore.Design 9.0.7** - EF tooling
 
 ### InventoryService.Infrastructure
